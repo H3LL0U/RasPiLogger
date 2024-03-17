@@ -1,6 +1,6 @@
 import os
 import keyboard as k
-
+import datetime
 from convert_keys_to_packets import convert_scancodes_to_packets
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 NULL_CHAR = chr(0)
@@ -15,10 +15,12 @@ def on_key_event(e):
     
     
     pressed_events = k._pressed_events
-    print( pressed_events)
+    
     scancodes = [event for event in pressed_events if pressed_events[event].event_type=="down"]
+    
     package_to_send = convert_scancodes_to_packets(scancodes=scancodes)
-    write_report(package_to_send)
+    #write_report(package_to_send)
+    
     if e.event_type == k.KEY_DOWN:
         
             
@@ -35,11 +37,11 @@ def on_key_event(e):
 
 def setup():
     with open(path_log, "a") as log:
-        log.write("\n============New Session=========\n")
+        log.write(f"\n============New Session=========\n{datetime.datetime.now().date()}\n{datetime.datetime.now().strftime("%H:%M:%S")}\n")
 
 if __name__ == "__main__":
 
-        setup()
+        #setup()
             
         
                 

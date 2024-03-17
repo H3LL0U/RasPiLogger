@@ -174,6 +174,7 @@ usb_main_packets = {
 
 
 scancode_to_packet = {
+83:0x4C,
 30:0x4,
 48:0x5,
 46:0x6,
@@ -312,7 +313,19 @@ scancode_to_packet = {
 161:0xa1,
 162:0xa3,
 163:0xa4,
-165:0xa6
+165:0xa6,
+#arrows
+73: 0x4B,
+81: 0x4E, #pgdn
+77: 0x4F,
+75: 0x50,
+80: 0x51,
+72: 0x52,
+
+76: 0xA2,
+71: 0x4A,
+79: 0x4D,
+82:0x49
 }
 
 
@@ -326,7 +339,7 @@ modifier_keys = {
 91 : 3, #left windows
 #"right ctrl": 4,
 54 :5, #right shift
-#"right alt": 6,
+541: 6,
 #"right windows": 7
 }
 
