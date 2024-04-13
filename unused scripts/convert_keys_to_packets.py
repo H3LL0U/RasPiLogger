@@ -1,3 +1,10 @@
+
+'''
+this can be used to convert list of scancodes into data packet sent by usb keyboard
+(not currently used in the project)
+Uses usb_packets from /files for RP zero
+'''
+
 from usb_packets import scancode_to_packet, modifier_keys
 NULL_CHR = chr(0)
 def set_bit(byte:chr, bit_index:int) -> chr:

@@ -1,5 +1,8 @@
 import usb.core as usb
-import keyboard 
+import keyboard
+'''
+This is used to convert Scancodes / Specific names to keycodes
+'''
 
 #name of the key : byte representation.
 usb_main_packets = {
@@ -174,6 +177,16 @@ usb_main_packets = {
 
 
 scancode_to_packet = {
+#modifier keys
+42 : 225,
+54 : 229,
+29 : 224,
+29 : 228,
+56 : 226,
+56 : 230,
+224: 227,
+224: 231,
+
 83:0x4C,
 30:0x4,
 48:0x5,
@@ -260,7 +273,6 @@ scancode_to_packet = {
 96:0x60,
 89:0x59,
 90:0x5a,
-91:0x5b,
 92:0x5c,
 93:0x65,
 94:0x5e,
@@ -342,8 +354,3 @@ modifier_keys = {
 541: 6,
 #"right windows": 7
 }
-
-
-
-        
-        
