@@ -1,4 +1,4 @@
-import usb.core as usb
+#import usb.core as usb
 import keyboard
 '''
 This is used to convert Scancodes / Specific names to keycodes
