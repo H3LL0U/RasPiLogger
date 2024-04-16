@@ -64,7 +64,7 @@ we can do this with:
 $ sudo nano /etc/rc.local
 you can add this line to one of the lines before exit 0
 
- sudo python3 /home/turbo/Scripts/logger/Log.py &
+sudo python3 /home/turbo/Scripts/logger/Log.py &
 
 at the end it's going to look something like this
 '''

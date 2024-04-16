@@ -6,7 +6,7 @@ import threading
 import os
 import keyboard as k
 import datetime
-from convert_keys_to_packets import convert_scancodes_to_packets
+#from convert_keys_to_packets import convert_scancodes_to_packets
 import serial
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 NULL_CHAR = chr(0)

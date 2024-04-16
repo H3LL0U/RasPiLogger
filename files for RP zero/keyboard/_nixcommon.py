@@ -3,6 +3,7 @@ import struct
 import os
 import atexit
 from time import time as now
+from time import sleep
 from threading import Thread
 from glob import glob
 try:
@@ -110,7 +111,9 @@ class AggregatedEventDevice(object):
 
     def check_for_new_devices(self):
         while True:
+            sleep(2)
             devices_paths = [device.path for device in self.devices]
+            
             new_devices = [device.path for device in list_devices_from_proc("kbd")]
 
             for new_device in new_devices:
