@@ -63,7 +63,8 @@ We can do this with:
 $ sudo nano /etc/rc.local
 You can add this line to one of the lines before exit 0
 ```
-sudo python3 ~/Scripts/RasPiLogger/"files for RP zero"/Log.py &
+sudo python3 /home/<usr>/Scripts/RasPiLogger/"files for RP zero"/Log.py &
+(replace <usr> with the username that you use)
 ```
 
 At the end it should look something like this:
@@ -86,7 +87,7 @@ if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
 
-sudo python3 ~/Scripts/RasPiLogger/"files for RP zero"/Log.py &
+sudo python3 /home/<usr>/Scripts/RasPiLogger/"files for RP zero"/Log.py &
 
 exit 0
 ```
