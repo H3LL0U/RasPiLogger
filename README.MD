@@ -1,4 +1,4 @@
-This is a project that can help you create a simple keylogger with Raspberry pi pico and Raspberry pi zero 
+This is a project that can help you create a simple keylogger with Raspberry pi pico and Raspberry pi zero W
 
 Materials:
 Raspberry pi pico
@@ -14,17 +14,13 @@ Tutorial:
 You can use tools like raspberry pi Imager. In my case i installed Rasperry pi OS (lite)
 
 When you installed the OS put it into the raspberry pi and SSH into it (with tools like PUTTY)
+(You can also use other means to run cmd commands)
 
-After you are SSH'd into the keyboard you can create a disignated folder:
+After you are SSH'd into the RaspberryPi you can run the following commands:
+
+Firstly we will need to upgrade everything, install git and pip (If a message pops up asking for confirmation just type "Y"):
 ```
-$ mkdir Scripts
-```
-After that we can work from there:
-```
-$ cd Scripts
-```
-We will also need to upgrade everything, install git and pip:
-```
+$ sudo apt-get update
 $ sudo apt update
 $ sudo apt upgrade
 $ sudo apt install git
@@ -38,39 +34,40 @@ Also we need to enable a serial port on our Raspberry pi:
 ```
 $ sudo raspi-config
 ```
-Navigate to Interface options > Serial port > No > Yes
-
+Navigate to Interface options > Serial port > No > Yes > Finish
+(You can decide to reboot or continue with the file setup and reboot later)
 ## files setup
-
-
-After that you can install the fork of the package "keyboard" (you can also just install a normal package with pip install keyboard, but at the moment it contains a which doesn't allow for a keyboard to be disconected this fork contains a fix for it)
+Lets create a disignated folder first:
 ```
-$ git clone https://github.com/H3LL0U/keyboard.git
+$ mkdir Scripts
 ```
-And also this repo:
+After that we can work from there:
+```
+$ cd Scripts
+```
+
+After that you can clone this repo (this repo uses a package "keyboard" from this fork https://github.com/H3LL0U/keyboard):
 ```
 $ git clone https://github.com/H3LL0U/RasPiLogger.git
 ```
-After that you can move all these files to a folder:
+
+You can delete the files for Raspberry pi pico since they are not being used for this part:
+
 ```
-$ mkdir logger
-$ mv ~/Scripts/RasPiLogger/'files for RP zero'/* ~/Scripts/logger
-$ mv ~/Scripts/keyboard/keyboard ~/Scripts/logger
+$ sudo rm -r ~/Scripts/RasPiLogger/"files for RP pico"
 ```
-You can delete all the other files since they are not going to be needed anymore:
-```
-$ sudo rm -r ~/Scripts/keyboard
-$ sudo rm -r ~/Scripts/RasPiLogger
-```
+
 And we are almost done with the setup for raspberry pi zero
 The only thing that we need to do is make the script start automatically after each reboot
 We can do this with:
 $ sudo nano /etc/rc.local
 You can add this line to one of the lines before exit 0
 ```
-sudo python3 /home/turbo/Scripts/logger/Log.py &
+sudo python3 ~/Scripts/RasPiLogger/"files for RP zero"/Log.py &
 ```
-At the end it's going to look something like this
+
+At the end it should look something like this:
+
 ```
 # rc.local
 #
@@ -89,14 +86,25 @@ if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
 
-sudo python3 /home/turbo/Scripts/logger/Log.py $
+sudo python3 ~/Scripts/RasPiLogger/"files for RP zero"/Log.py &
 
 exit 0
 ```
 
 Save and quit (ctrl+s and ctrl+x)
 
+You can test if the script is working by running it manually:
+
+```
+sudo python3 ~/Scripts/RasPiLogger/"files for RP zero"/Log.py
+```
+It will display the inputs that are being pressed in the terminal
+(ctrl+c to quit)
+After the reboot this script will be run automatically on startup if everything was done correctly
+
+The Log.txt file which records the user's inputs is going to be saved in the same directory as Log.py file
+
 Congratulations! The setup for Raspberry pi zero is done!
 
-#TODO: Finish full tutrial,
+#TODO: Finish tutorial for Raspberry pi pico and hardware setup,
 Reduce long boot time
