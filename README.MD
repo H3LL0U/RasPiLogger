@@ -8,8 +8,6 @@ A way to write to the mini SD card (For example a mini SD card reader)
 A way to connect a wire between two Raspberry Pi's (For example a Soldering iron kit)
 Micro USB (male) to female USB cable (in order to conect the keyboard to the RP zero)
 An Y OTG cable 
-![OTG](https://github.com/H3LL0U/RasPiLogger/assets/151795050/ad8684d1-9a7c-4b8f-a862-fca7165152be)
-Such as this one
 and a Micro USB male to Micro USB adapter (alternativly you can use other cables)
 
 
@@ -121,7 +119,8 @@ Congratulations! The setup for Raspberry pi zero is done!
 
 #Raspberry Pi Pico setup
 You can use tools such as Thonny IDE for this.
-Firstly you will need to upload CircuitPython on your Raspberry Pi Pico
+
+Firstly you will need to upload CircuitPython on your Raspberry Pi Pico.
 Afterwards you can upload the files from /"files for RP pico" from this repo directly
 into the file system of the Raspberry Pi Pico (Make sure that they are in the root of the file system)
 WITH THE EXCEPTION OF "adafruit hid' (this directory should be copied to D:\lib)
@@ -137,11 +136,16 @@ for Raspberry Pi's to comunicate with each other and to make it possible to conn
 The image above shows how to connect everything
 
 To ustablish UART connection you can solder the wires directly or use some other method
+The OTG cable used in this configuration look like this:
+
+![S03723d2365a243c398519ea73c164dca2 jpg_640x640Q90 jpg_](https://github.com/H3LL0U/RasPiLogger/assets/151795050/1c6e24de-7301-48dd-85c5-1be0e0d39228)
+
 
 Instead of using a OTG cable you can connect a red wire to other power source
+(This can resolve the issue of slow boot time if you can preboot the Raspberry Pi zero)
 
 If everything has been done correctly the RasPiLogger should work
 
-#TODO: 
-Finish tutorial for Raspberry pi pico and hardware setup,
-Reduce long boot time
+#Known Issues:
+With the current configuration it takes around 30 seconds after the connection to the computer in order for 
+RasPiLogger to work
