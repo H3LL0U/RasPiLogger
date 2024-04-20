@@ -2,10 +2,15 @@ This is a project that can help you create a simple keylogger with Raspberry pi 
 
 Materials:
 Raspberry pi pico
-Raspberry pi zero (with GPIO pins and a mini SD card)
-2 wires
-Micro USB to female USB cable (in order to conect the keyboard to the RP zero)
-An OTG cable and a Micro USB male to Micro USB adapter (alternativly you can use other cables but then it will take more usb slots from the computer)
+Raspberry pi zero (with mini SD card)
+A way to write to the mini SD card (For example a mini SD card reader)
+1 wire
+A way to connect a wire between two Raspberry Pi's (For example a Soldering iron kit)
+Micro USB (male) to female USB cable (in order to conect the keyboard to the RP zero)
+An Y OTG cable 
+![OTG](https://github.com/H3LL0U/RasPiLogger/assets/151795050/ad8684d1-9a7c-4b8f-a862-fca7165152be)
+Such as this one
+and a Micro USB male to Micro USB adapter (alternativly you can use other cables)
 
 
 Tutorial:
@@ -114,5 +119,29 @@ The Log.txt file which records the user's inputs is going to be saved in the sam
 
 Congratulations! The setup for Raspberry pi zero is done!
 
-#TODO: Finish tutorial for Raspberry pi pico and hardware setup,
+#Raspberry Pi Pico setup
+You can use tools such as Thonny IDE for this.
+Firstly you will need to upload CircuitPython on your Raspberry Pi Pico
+Afterwards you can upload the files from /"files for RP pico" from this repo directly
+into the file system of the Raspberry Pi Pico (Make sure that they are in the root of the file system)
+WITH THE EXCEPTION OF "adafruit hid' (this directory should be copied to D:\lib)
+
+
+#Hardware setup
+
+After the software setup has been complete you will need to setup the hardware in order
+for Raspberry Pi's to comunicate with each other and to make it possible to connect it to the computer
+
+![Hardware_setup](https://github.com/H3LL0U/RasPiLogger/assets/151795050/408141ee-2855-43be-a9de-3844c2d0934a)
+
+The image above shows how to connect everything
+
+To ustablish UART connection you can solder the wires directly or use some other method
+
+Instead of using a OTG cable you can connect a red wire to other power source
+
+If everything has been done correctly the RasPiLogger should work
+
+#TODO: 
+Finish tutorial for Raspberry pi pico and hardware setup,
 Reduce long boot time
