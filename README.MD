@@ -101,6 +101,13 @@ sudo python3 ~/Scripts/RasPiLogger/"files for RP zero"/Log.py
 ```
 It will display the inputs that are being pressed in the terminal
 (ctrl+c to quit)
+
+You can also disable ctrl+alt+del from rebooting you raspberry pi by:
+
+```
+$ sudo systemctl mask ctrl-alt-del.target
+```
+
 After the reboot this script will be run automatically on startup if everything was done correctly
 
 The Log.txt file which records the user's inputs is going to be saved in the same directory as Log.py file
