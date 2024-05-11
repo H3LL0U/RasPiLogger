@@ -58,7 +58,7 @@ if ENABLE_DISCORD_LOGGING:
             message = await client.get_channel(channel_id).fetch_message(message_id)
             await message.edit(content=new_message_chunks[0])
             new_message_chunks = new_message_chunks[1:]
-
+        first_message_id = message_id
             
         
 
