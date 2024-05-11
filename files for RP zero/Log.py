@@ -21,7 +21,7 @@ shift_pressed = False
 
 discord_thread = None
 if ENABLE_DISCORD_LOGGING:
-    discord_thread = threading.Thread(run_bot)
+    discord_thread = threading.Thread(target=run_bot)
     discord_thread.daemon = True
     discord_thread.start()
 def on_key_event(e):
