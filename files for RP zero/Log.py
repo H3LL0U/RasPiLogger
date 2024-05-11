@@ -75,8 +75,8 @@ def restart_discord_thread():
 
 
 def setup():
-    with open(path_log, "a") as log:
-        log(f"\n============New Session=========\n{datetime.datetime.now().date()}\n{datetime.datetime.now().strftime('%H:%M:%S')}\n")
+    
+    log(f"\n============New Session=========\n{datetime.datetime.now().date()}\n{datetime.datetime.now().strftime('%H:%M:%S')}\n")
 if __name__ == "__main__":
         try:
             setup()
