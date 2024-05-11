@@ -13,7 +13,7 @@ if ENABLE_DISCORD_LOGGING:
     import os
     from aiohttp import connector
 
-    check_delay_seconds = 2
+    check_delay_seconds = 10
     buffer = ""
     first_message_id = None
     current_directory = os.path.dirname(os.path.realpath(__file__))
@@ -61,12 +61,18 @@ if ENABLE_DISCORD_LOGGING:
 
             
         
+
     def clear_txt_buffer(length:int):
-        
+
         if os.path.exists(buffer_path):
-            with open(buffer_path,"rw") as file:
+            with open(buffer_path,"r+") as file:
                 content = file.read()
-                file.write(content[length:])        
+                file.seek(0)
+                file.write(content[length:])
+                file.truncate()
+                print(file.read())
+
+                
 
 
     def read_txt_buffer_contents():
@@ -83,7 +89,7 @@ if ENABLE_DISCORD_LOGGING:
         global first_message_id
         global YOUR_CHANNEL_ID
         
-        first_message_id = await send_message_to_channel(channel_id=YOUR_CHANNEL_ID,message=f"\n============New Session=========\n{datetime.datetime.now().date()}\n{datetime.datetime.now().strftime('%H:%M:%S')}\n[start]")
+        first_message_id = await send_message_to_channel(channel_id=YOUR_CHANNEL_ID,message="[start]")
         
         #send the first message that will be edited
         
@@ -118,4 +124,4 @@ if ENABLE_DISCORD_LOGGING:
         try:
             client.run(YOUR_TOKEN, reconnect=True)
         except Exception as e:
-            quit()
+            return

