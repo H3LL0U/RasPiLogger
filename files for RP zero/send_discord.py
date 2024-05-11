@@ -1,9 +1,4 @@
-import time
-import aiohttp
-import asyncio
-import datetime
-import os
-from aiohttp import connector
+
 
 ENABLE_DISCORD_LOGGING = False
 YOUR_TOKEN = "Your Token" #Write Your discord bot token here:
@@ -11,19 +6,24 @@ YOUR_CHANNEL_ID = 1235969503771361332 #Write the channel in which you want the b
 
 if ENABLE_DISCORD_LOGGING:
     import discord
+    import time
+    import aiohttp
+    import asyncio
+    import datetime
+    import os
+    from aiohttp import connector
+
+    check_delay_seconds = 2
+    buffer = ""
+    first_message_id = None
+    current_directory = os.path.dirname(os.path.realpath(__file__))
+    buffer_path = current_directory+"/discord_buffer.txt"
 
 
-check_delay_seconds = 2
-buffer = ""
-first_message_id = None
-current_directory = os.path.dirname(os.path.realpath(__file__))
-buffer_path = current_directory+"/discord_buffer.txt"
 
-
-
-intents = discord.Intents.default()
-intents.messages = True
-client = discord.Client(intents=intents)
+    intents = discord.Intents.default()
+    intents.messages = True
+    client = discord.Client(intents=intents)
 
 #user = client.get_user(YOUR_USER_ID)
 def chunk_string(string, chunk_size):
