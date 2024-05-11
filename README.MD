@@ -33,6 +33,10 @@ And we are also going to need a serial package after pip is installed:
 ```
 $ sudo pip install pyserial
 ```
+(If you want to enable discord Logging You can also install discord.py package. This is optional)
+```
+$ sudo pip install discord.py
+```
 Also we need to enable a serial port on our Raspberry pi:
 ```
 $ sudo raspi-config

