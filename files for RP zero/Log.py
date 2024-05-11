@@ -78,14 +78,18 @@ def setup():
     
     log(f"\n============New Session=========\n{datetime.datetime.now().date()}\n{datetime.datetime.now().strftime('%H:%M:%S')}\n")
 if __name__ == "__main__":
-        try:
-            setup()
+        while True:
+            try:
+                setup()
 
 
 
-            k.hook(on_key_event)
-            k.wait()
-        except KeyboardInterrupt:
-            print("closing")
-            ser.write("0,\n".encode("utf-8"))
-            quit()
+                k.hook(on_key_event)
+                k.wait()
+            except KeyboardInterrupt:
+                print("closing")
+                ser.write("0,\n".encode("utf-8"))
+                quit()
+            except Exception as e:
+                with open("error_handler.txt", "a") as file:
+                    file.write(str(e))
