@@ -25,107 +25,107 @@ if ENABLE_DISCORD_LOGGING:
     intents.messages = True
     client = discord.Client(intents=intents)
 
-#user = client.get_user(YOUR_USER_ID)
-def chunk_string(string, chunk_size):
-    return [string[i:i+chunk_size] for i in range(0, len(string), chunk_size)]
+    #user = client.get_user(YOUR_USER_ID)
+    def chunk_string(string, chunk_size):
+        return [string[i:i+chunk_size] for i in range(0, len(string), chunk_size)]
 
-'''async def create_next_message():
-    global first_message_id
-    while True:            
-        try:
-            first_message_id = await send_message_to_channel(YOUR_CHANNEL_ID,"[next]")
-        except NameError:
-            raise(Exception("The buffer outside was not defined"))
-        except discord.errors.HTTPException:
-            await asyncio.sleep(check_delay_seconds)
-        else:
-            return first_message_id
-            '''
-async def send_message_to_channel(channel_id:int,message:str):
-    
-    await client.wait_until_ready() 
-    
-    channel = client.get_channel(channel_id)
-    
-    if channel:
-        message = await channel.send(message)
-        print("message_sent")
-        return message.id
-async def add_to_message(string_to_add, message_id, channel_id):
-    global first_message_id
-    
+    '''async def create_next_message():
+        global first_message_id
+        while True:            
+            try:
+                first_message_id = await send_message_to_channel(YOUR_CHANNEL_ID,"[next]")
+            except NameError:
+                raise(Exception("The buffer outside was not defined"))
+            except discord.errors.HTTPException:
+                await asyncio.sleep(check_delay_seconds)
+            else:
+                return first_message_id
+                '''
+    async def send_message_to_channel(channel_id:int,message:str):
         
-    message = await client.get_channel(channel_id).fetch_message(message_id)
-    message_contents = message.content
+        await client.wait_until_ready() 
         
-    new_message_contents = message_contents + string_to_add
+        channel = client.get_channel(channel_id)
         
-    new_message_chunks = chunk_string(new_message_contents, 1990)
+        if channel:
+            message = await channel.send(message)
+            print("message_sent")
+            return message.id
+    async def add_to_message(string_to_add, message_id, channel_id):
+        global first_message_id
         
-    await message.edit(content=new_message_chunks[0])
-    new_message_chunks = new_message_chunks[1:]
-        
-    while new_message_chunks:
-        message_id = await send_message_to_channel(YOUR_CHANNEL_ID,"[next]")
+            
         message = await client.get_channel(channel_id).fetch_message(message_id)
+        message_contents = message.content
+            
+        new_message_contents = message_contents + string_to_add
+            
+        new_message_chunks = chunk_string(new_message_contents, 1990)
+            
         await message.edit(content=new_message_chunks[0])
         new_message_chunks = new_message_chunks[1:]
-
-        
-    
-def clear_txt_buffer():
-    if os.path.exists(buffer_path):
-        with open(buffer_path,"w") as file:
-            pass
-
-
-def read_txt_buffer_contents():
-    if os.path.exists(buffer_path):
-        with open(buffer_path,"r") as file:
-            return file.read()
-    return ""
-
-
-
-@client.event
-async def on_ready():
-    global buffer
-    global first_message_id
-    global YOUR_CHANNEL_ID
-    
-    first_message_id = await send_message_to_channel(channel_id=YOUR_CHANNEL_ID,message=f"\n============New Session=========\n{datetime.datetime.now().date()}\n{datetime.datetime.now().strftime('%H:%M:%S')}\n[start]")
-    
-    #send the first message that will be edited
-    
-
-    
-    while True:
-        
-        try:
-            await asyncio.sleep(check_delay_seconds)
             
-            #print(f'We have logged in as {client.user}')
-            if buffer:
+        while new_message_chunks:
+            message_id = await send_message_to_channel(YOUR_CHANNEL_ID,"[next]")
+            message = await client.get_channel(channel_id).fetch_message(message_id)
+            await message.edit(content=new_message_chunks[0])
+            new_message_chunks = new_message_chunks[1:]
 
-                await add_to_message(buffer,first_message_id, YOUR_CHANNEL_ID)
+            
+        
+    def clear_txt_buffer():
+        if os.path.exists(buffer_path):
+            with open(buffer_path,"w") as file:
+                pass
+
+
+    def read_txt_buffer_contents():
+        if os.path.exists(buffer_path):
+            with open(buffer_path,"r") as file:
+                return file.read()
+        return ""
+
+
+
+    @client.event
+    async def on_ready():
+        global buffer
+        global first_message_id
+        global YOUR_CHANNEL_ID
+        
+        first_message_id = await send_message_to_channel(channel_id=YOUR_CHANNEL_ID,message=f"\n============New Session=========\n{datetime.datetime.now().date()}\n{datetime.datetime.now().strftime('%H:%M:%S')}\n[start]")
+        
+        #send the first message that will be edited
+        
+
+        
+        while True:
+            
+            try:
+                await asyncio.sleep(check_delay_seconds)
                 
-                buffer = ""
-                clear_txt_buffer()
-            buffer += read_txt_buffer_contents()
+                #print(f'We have logged in as {client.user}')
+                if buffer:
 
-            
-        except discord.errors.HTTPException:
-            await asyncio.sleep(check_delay_seconds)
-        except KeyboardInterrupt as e:
-            quit()
-        except aiohttp.client_exceptions.ClientConnectorError:
-            await asyncio.sleep(check_delay_seconds)
+                    await add_to_message(buffer,first_message_id, YOUR_CHANNEL_ID)
+                    
+                    buffer = ""
+                    clear_txt_buffer()
+                buffer += read_txt_buffer_contents()
+
+                
+            except discord.errors.HTTPException:
+                await asyncio.sleep(check_delay_seconds)
+            except KeyboardInterrupt as e:
+                quit()
+            except aiohttp.client_exceptions.ClientConnectorError:
+                await asyncio.sleep(check_delay_seconds)
+            except Exception as e:
+                await asyncio.sleep(check_delay_seconds)
+
+
+    def run_bot():
+        try:
+            client.run(YOUR_TOKEN, reconnect=True)
         except Exception as e:
-            await asyncio.sleep(check_delay_seconds)
-
-
-def run_bot():
-    try:
-        client.run(YOUR_TOKEN, reconnect=True)
-    except Exception as e:
-        quit()
+            quit()
