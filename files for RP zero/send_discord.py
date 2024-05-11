@@ -10,6 +10,8 @@ ENABLE_DISCORD_LOGGING = False
 YOUR_TOKEN = "Your Token" #Write Your discord bot token here:
 YOUR_CHANNEL_ID = 1235969503771361332 #Write the channel in which you want the bot to write here (takes an integer):
 
+if ENABLE_DISCORD_LOGGING:
+    import discord
 
 
 check_delay_seconds = 2
