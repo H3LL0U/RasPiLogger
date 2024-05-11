@@ -7,7 +7,9 @@ import os
 import keyboard as k
 import datetime
 import serial
-from send_discord import ENABLE_DISCORD_LOGGING , YOUR_CHANNEL_ID, YOUR_TOKEN , buffer_path , run_bot
+from send_discord import ENABLE_DISCORD_LOGGING , YOUR_CHANNEL_ID, YOUR_TOKEN 
+if ENABLE_DISCORD_LOGGING:
+    from send_discord import buffer_path , run_bot
 SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 NULL_CHAR = chr(0)
 
