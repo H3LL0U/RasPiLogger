@@ -29,18 +29,6 @@ if ENABLE_DISCORD_LOGGING:
     def chunk_string(string, chunk_size):
         return [string[i:i+chunk_size] for i in range(0, len(string), chunk_size)]
 
-    '''async def create_next_message():
-        global first_message_id
-        while True:            
-            try:
-                first_message_id = await send_message_to_channel(YOUR_CHANNEL_ID,"[next]")
-            except NameError:
-                raise(Exception("The buffer outside was not defined"))
-            except discord.errors.HTTPException:
-                await asyncio.sleep(check_delay_seconds)
-            else:
-                return first_message_id
-                '''
     async def send_message_to_channel(channel_id:int,message:str):
         
         await client.wait_until_ready() 
@@ -73,10 +61,12 @@ if ENABLE_DISCORD_LOGGING:
 
             
         
-    def clear_txt_buffer():
+    def clear_txt_buffer(length:int):
+        
         if os.path.exists(buffer_path):
-            with open(buffer_path,"w") as file:
-                pass
+            with open(buffer_path,"rw") as file:
+                content = file.read()
+                file.write(content[length:])        
 
 
     def read_txt_buffer_contents():
@@ -108,9 +98,9 @@ if ENABLE_DISCORD_LOGGING:
                 if buffer:
 
                     await add_to_message(buffer,first_message_id, YOUR_CHANNEL_ID)
-                    
+                    clear_txt_buffer(len(buffer))
                     buffer = ""
-                    clear_txt_buffer()
+                    
                 buffer += read_txt_buffer_contents()
 
                 
