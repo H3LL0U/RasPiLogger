@@ -122,6 +122,6 @@ if ENABLE_DISCORD_LOGGING:
 
     def run_bot():
         try:
-            client.run(YOUR_TOKEN, reconnect=True)
+            client.run(YOUR_TOKEN, reconnect=True, log_handler=None)
         except Exception as e:
             return
