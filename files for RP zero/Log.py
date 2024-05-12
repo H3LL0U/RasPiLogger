@@ -66,10 +66,11 @@ def setup():
 if __name__ == "__main__":
         
         try:
+            SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
             from send_discord import ENABLE_DISCORD_LOGGING , YOUR_CHANNEL_ID, YOUR_TOKEN 
             if ENABLE_DISCORD_LOGGING:
                 from send_discord import buffer_path , run_bot
-            SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
+            
             NULL_CHAR = chr(0)
 
             path_log = f"{SCRIPT_PATH}/Log.txt"

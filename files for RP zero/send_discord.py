@@ -1,8 +1,13 @@
-
+import os
 
 ENABLE_DISCORD_LOGGING = False
 YOUR_TOKEN = "Your Token" #Write Your discord bot token here:
 YOUR_CHANNEL_ID = 1235969503771361332 #Write the channel in which you want the bot to write here (takes an integer):
+
+
+current_directory = os.path.dirname(os.path.realpath(__file__))
+buffer_path = current_directory+"/discord_buffer.txt"
+
 def run_bot():
     if ENABLE_DISCORD_LOGGING:
         import discord
@@ -10,14 +15,13 @@ def run_bot():
         import aiohttp
         import asyncio
         import datetime
-        import os
+        
         from aiohttp import connector
 
         check_delay_seconds = 10
         buffer = ""
         first_message_id = None
-        current_directory = os.path.dirname(os.path.realpath(__file__))
-        buffer_path = current_directory+"/discord_buffer.txt"
+
 
 
 
@@ -40,7 +44,7 @@ def run_bot():
                 print("message_sent")
                 return message.id
         async def add_to_message(string_to_add, message_id, channel_id):
-            global first_message_id
+            nonlocal first_message_id
             
                 
             message = await client.get_channel(channel_id).fetch_message(message_id)
@@ -85,8 +89,8 @@ def run_bot():
 
         @client.event
         async def on_ready():
-            global buffer
-            global first_message_id
+            nonlocal buffer
+            nonlocal first_message_id
             global YOUR_CHANNEL_ID
             
             first_message_id = await send_message_to_channel(channel_id=YOUR_CHANNEL_ID,message="[start]")
