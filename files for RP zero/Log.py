@@ -55,7 +55,7 @@ def log(message:str):
             discord_log.write(message)
 def restart_discord_thread():
     global discord_thread
-    discord_thread = threading.Thread(run_bot)
+    discord_thread = threading.Thread(target=run_bot)
     discord_thread.daemon = True
     discord_thread.start()
 
