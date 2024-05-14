@@ -167,7 +167,7 @@ YOUR_CHANNEL_ID = 1235969503771361332 #Write the channel in which you want the b
 
 Congratulations! The setup for Raspberry pi zero is done!
 
-#Raspberry Pi Pico setup
+# Raspberry Pi Pico setup
 You can use tools such as Thonny IDE for this.
 
 Firstly you will need to upload CircuitPython on your Raspberry Pi Pico.
@@ -176,7 +176,7 @@ into the file system of the Raspberry Pi Pico (Make sure that they are in the ro
 WITH THE EXCEPTION OF "adafruit hid' (this directory should be copied to D:\lib)
 
 
-#Hardware setup
+# Hardware setup
 
 After the software setup has been complete you will need to setup the hardware in order
 for Raspberry Pi's to comunicate with each other and to make it possible to connect it to the computer
@@ -196,6 +196,6 @@ Instead of using a OTG cable you can connect a red wire to other power source
 
 If everything has been done correctly the RasPiLogger should work
 
-#Known Issues:
+# Known Issues:
 With the current configuration it takes around 30 seconds after the connection to the computer in order for 
 RasPiLogger to work
