@@ -121,11 +121,11 @@ The Log.txt file which records the user's inputs is going to be saved in the sam
 
 
 
-#Enabling discord logging:
+# Enabling discord logging:
 (Optional)
 Is it too bothersome to access your RasPiLogger? You can enable discord logging feature!
 
-##Creating a bot
+## Creating a bot
 
 Firstly what you want to do is create a discord bot and add it to your server:
 You can do this using a guide bellow:
