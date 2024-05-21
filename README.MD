@@ -13,7 +13,7 @@ and a Micro USB male to Micro USB adapter (alternativly you can use other cables
 
 Tutorial:
 # Basic setup for Raspberry pi zero W
-##First install the Raspberry pi OS image on your sd card: 
+## First install the Raspberry pi OS image on your sd card: 
 You can use tools like raspberry pi Imager. In my case i installed Rasperry pi OS (lite)
 
 When you installed the OS put it into the raspberry pi and SSH into it (with tools like PUTTY)
@@ -66,7 +66,12 @@ $ sudo rm -r ~/Scripts/RasPiLogger/"files for RP pico"
 
 And we are almost done with the setup for raspberry pi zero
 The only thing that we need to do is make the script start automatically after each reboot
-We can do this with:
+We can do this with two methods:
+using etc/rc.local (easier)
+or
+using a custom service (recomended) 
+
+## etc/rc.local method 
 $ sudo nano /etc/rc.local
 You can add this line to one of the lines before exit 0
 ```
@@ -101,6 +106,37 @@ exit 0
 
 Save and quit (ctrl+s and ctrl+x)
 
+## Custom service method
+(recomended)
+first let's create a service called Logger.service by running:
+```sudo nano /etc/systemd/system/Logger.service```
+
+there you can paste the following:
+
+```
+[Unit]
+Description=Run the RasPiLogger
+Before=dhcpcd.service
+
+[Service]
+ExecStart=/usr/bin/python3 /home/<usr>/Scripts/RasPiLogger/"files for RP zero"/Log.py #replace <usr> with your user
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+after you can enable it by running:                                 
+```                                                                                  
+sudo systemctl daemon-reload
+sudo systemctl enable Logger.service
+sudo systemctl start Logger.service
+```
+if everything was done correctly the Script should be already running
+
+You can also check if the service is running as intended by running
+```sudo systemctl status Logger.service```
+
 You can test if the script is working by running it manually:
 
 ```
@@ -118,6 +154,62 @@ $ sudo systemctl mask ctrl-alt-del.target
 After the reboot this script will be run automatically on startup if everything was done correctly
 
 The Log.txt file which records the user's inputs is going to be saved in the same directory as Log.py file
+## Speeding up time to boot
+
+
+With a current configuration it might take around 40-50 seconds for the Raspberry pi zero W to
+run the Script. There are a couple of things you can do to improve this time:
+
+### Disabling unnecesary services
+(recomended)
+
+You can run the following in the console of your Raspberry pi Zero:
+```
+sudo systemctl disable apt-daily-upgrade.service
+sudo systemctl disable apt-daily.service
+sudo systemctl mask apt-daily-upgrade.service
+sudo systemctl mask apt-daily.service
+sudo systemctl disable NetworkManager-wait-online.service
+sudo systemctl disable ModemManager.service
+sudo systemctl disable avahi-daemon.service
+sudo systemctl disable systemd-rfkill.service
+sudo systemctl disable polkit.service
+sudo systemctl disable dphys-swapfile.service
+sudo systemctl disable e2scrub_reap.service
+sudo systemctl disable fake-hwclock.service
+sudo systemctl disable modprobe@dm_mod.service
+sudo systemctl disable modprobe@drm.service
+sudo systemctl disable modprobe@efi_pstore.service
+sudo systemctl disable systemd-modules-load.service
+sudo systemctl disable rng-tools-debian.service
+sudo systemctl disable keyboard-setup.service
+sudo systemctl disable fstrim.service
+sudo systemctl disable hciuart.service
+sudo systemctl disable triggerhappy.service
+sudo systemctl disable raspi-config.service
+```
+
+This will disable some of the services that are not being used for our implomentation. (this will cut around 15 seconds of boot time)
+
+### Disabling HDMI and bluetooth
+
+You can open a config file like this
+```sudo nano /boot/config.txt```
+
+there you can add the following lines
+should be under the comment "# Enable DRM VC4 V3D driver" if the "dtoverlay=vc4-kms-v3d" existed in the config file
+```
+# Enable DRM VC4 V3D driver
+dtoverlay=vc4-kms-v3d
+max_framebuffers=0
+disable_splash=1
+# Disables bluetooth
+dtoverlay=disable-bt
+# Remove boot delay
+boot_delay=0
+```
+(ctrl+s , ctrl+x to save and quit)
+
 
 
 
@@ -134,7 +226,7 @@ After that you will need to copy an ID of the channel you want your bot to Log k
 You can do that by enabling developer mode in the settings and right clicking on the channel.
 (Save the channel ID and the Bot Token you will need them for the next step)
 
-##Enabling the feature
+## Enabling the feature
 
 in the same folder as Log.py there is another file called send_discord.py
 when you open it with
