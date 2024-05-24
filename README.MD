@@ -12,7 +12,9 @@ and a Micro USB male to Micro USB adapter (alternativly you can use other cables
 
 
 Tutorial:
-# Basic setup for Raspberry pi zero W
+# Basic setup for Raspberry pi zero W (Manual)
+(If you don't want to install RasPiLoggerOS image from the releases you can always manually setup everything.
+If you choose to install the image everything would already be set up with the exception of Discord logging feature.)
 ## First install the Raspberry pi OS image on your sd card: 
 You can use tools like raspberry pi Imager. In my case i installed Rasperry pi OS (lite)
 
@@ -191,21 +193,13 @@ sudo systemctl disable raspi-config.service
 
 This will disable some of the services that are not being used for our implomentation. (this will cut around 15 seconds of boot time)
 
-### Disabling HDMI and bluetooth
+### Disabling boot delay
 
 You can open a config file like this
 ```sudo nano /boot/config.txt```
 
-there you can add the following lines
-should be under the comment "# Enable DRM VC4 V3D driver" if the "dtoverlay=vc4-kms-v3d" existed in the config file
+there you can add the following line
 ```
-# Enable DRM VC4 V3D driver
-dtoverlay=vc4-kms-v3d
-max_framebuffers=0
-disable_splash=1
-# Disables bluetooth
-dtoverlay=disable-bt
-# Remove boot delay
 boot_delay=0
 ```
 (ctrl+s , ctrl+x to save and quit)
